@@ -14,9 +14,8 @@
     "typescript": "^5.1.6"
   },
   "scripts": {
-    "build": "\"npx tsc\" \"parcel build dist/views/home.ejs\"",
+    "build": "\"npx tsc\"",
     "start": "node dist/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\" ",
-    "grafstart": "parcel dist/views/home.ejs"
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\" "
   }
 }
