@@ -34,15 +34,15 @@ async function statistics() {
 }
 
 
-// patients()
-//     .then(async () => {
-//         await prisma.$disconnect()
-//     })
-//     .catch(async (e) => {
-//         console.log(e);
-//         await prisma.$disconnect();
-//         process.exit(1);
-//     })
+patients()
+    .then(async () => {
+        await prisma.$disconnect()
+    })
+    .catch(async (e) => {
+        console.log(e);
+        await prisma.$disconnect();
+        process.exit(1);
+    })
 
 statistics()
     .then(async () => {
