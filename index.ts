@@ -10,8 +10,8 @@ app.use(express.urlencoded({ extended: true }))
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.listen(8230, () => {
-  console.log('Server is running on port 8230');
+app.listen(8320, () => {
+  console.log('Server is running on port 8320');
 });
 
 app.get("/", (req: Request, res: Response) => {
