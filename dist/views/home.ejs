@@ -1,55 +1,14 @@
 <%- include('particles/header.ejs') %>
 
 <%- include('particles/navigation.ejs') %>
-
-<h1>Система мониторинга здоровья пациента</h1>
+<h1 style="margin:0 25% 0 25%;">Система мониторинга здоровья пациента</h1>
 
 <% for (let i = 0; i < patients.length; i++) { %>
 
     <div class="section">
             <h2 class="section__title"><%= patients[i].surname %> <%= patients[i].name %></h2>
-            <% for (let j = 0; j < statistics.length; j++) { %>
-            <p>Pulse: <%= statistics[j].pulse %></p>
-            <p>Время: <%= statistics[j].time.getHours() + ":" + statistics[j].time.getMinutes()%></p>
-            <% } %>
-            <div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
+            <img src="img/image.png"/>
     </div>
-
 <% } %>
-<script>
-    import Chart from './chart.js/auto'
-    console.log(statistics);
-    let timestamp = [];
-    for (let i = 0; i < statistics.length; i++) {
-      timestamp[i] = statistics[i].time.getDate() + " day " + statistics[i].time.getHours() + ":" + statistics[i].time.getMinutes();
-    }
-    console.log(timestamp);
-    
-    // (async function () {
-      let data = [];
-
-    for (let i = 0; i < timestamp.length; i++) {
-
-        data[i] = { time: timestamp[i], pulse: statistics[i].pulse , }
-        
-    }
-    
-    const chart = new Chart(
-    document.getElementById('acquisitions'),
-    {
-        type: 'line',
-        data: {
-        labels: data.map(row => row.time),
-        datasets: [
-            {
-            label: 'Pulse',
-            data: data.map(row => row.pulse)
-            }
-        ]
-        }
-    }
-    );
-    // })();
-</script>
-
+<!-- <script type="module" src="../../public/js/draw.js"></script> -->
 <%- include('particles/footer.ejs') %>
