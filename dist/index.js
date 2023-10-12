@@ -18,4 +18,7 @@ app.listen(8320, () => {
 app.get("/", (req, res) => {
     carsController.index(req, res);
 });
+app.get("/data", (req, res) => {
+    carsController.data(req, res);
+});
 //# sourceMappingURL=index.js.map
