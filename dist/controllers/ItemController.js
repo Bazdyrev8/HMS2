@@ -21,7 +21,6 @@ class ItemsController {
     index(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("      ");
-            let items = [];
             const patients = yield prisma.patients.findMany();
             const statistics = yield prisma.statistics.findMany();
             let stamp = [];
@@ -92,6 +91,40 @@ class ItemsController {
             }
             console.log(time);
             res.redirect('/');
+        });
+    }
+    statistics_show(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const patients = yield prisma.patients.findMany();
+            const statistics = yield prisma.statistics.findMany();
+            let stamp = [];
+            for (let i = 0; i < statistics.length; i++) {
+                let month = statistics[i].time.getUTCMonth() + 1;
+                let time = statistics[i].time.getUTCHours() + 3;
+                stamp[i] = statistics[i].time.getDate() + "." + month + " " + time + ":" + statistics[i].time.getMinutes();
+            }
+            let data = [];
+            for (let j = 0; j < statistics.length; j++) {
+                data[j] = { time: stamp[j] };
+            }
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(row => row.time),
+                    datasets: [
+                        {
+                            label: 'Pulse',
+                            data: statistics.map(row => row.pulse)
+                        }
+                    ]
+                }
+            });
+            const buffer = canvas.toBuffer('image/png');
+            fs.writeFileSync("public/img/image1.png", buffer);
+            myChart.destroy();
+            let object = { patients, statistics };
+            console.log(object);
+            res.status(200).send(object);
         });
     }
 }

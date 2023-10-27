@@ -3,7 +3,7 @@ import path from 'path';
 import { ItemsController } from './controllers/ItemController';
 
 const app: Express = express();
-const carsController = new ItemsController();
+const itemsController = new ItemsController();
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
@@ -15,11 +15,13 @@ app.listen(8320, () => {
 });
 
 app.get("/", (req: Request, res: Response) => {
-  carsController.index(req, res);
+  itemsController.index(req, res);
 });
 
 app.get("/data", (req: Request, res: Response) => {
-  carsController.data(req, res);
+  itemsController.data(req, res);
 });
 
-
+app.get("/api/v1/statistics/show", (req: Request, res: Response) => {
+  itemsController.statistics_show(req, res);
+});
