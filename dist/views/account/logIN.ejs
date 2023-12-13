@@ -1,0 +1,32 @@
+<%- include('../particles/header.ejs') %>
+<%- include('../particles/navigation.ejs') %>
+<h1 style="margin:0 25% 0 25%;"><a href="/">Система мониторинга здоровья пациента</a></h1>
+
+<div>
+    <ul>
+      <li><a href="/logIN">Войти</a></li>
+      <li><a href="/register">Зарегистрироваться</a></li>
+    </ul>
+
+    <div>
+
+      <form action="/auth" method="post">
+        <div>
+          <label for="username">
+          </label>
+          <input type="text" id="username" name="username" required autocomplete="off" placeholder="Name" />
+        </div>
+
+        <div>
+          <label for="password">
+          </label>
+          <input type="password" id="password" name="password" required autocomplete="off" placeholder="Password" />
+        </div>
+
+        <button type="submit" value="Войти">Войти</button>
+      </form>
+      
+    </div>
+</div>
+
+<%- include('../particles/footer.ejs') %>

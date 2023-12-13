@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { patients, PrismaClient } from '@prisma/client';
 const { createCanvas } = require('canvas');
 const Chart = require('chart.js/auto');
-const fs = require("fs")
+const fs = require("fs");
 
 const canvas = createCanvas(400, 400);
 const ctx = canvas.getContext('2d');
@@ -11,9 +11,8 @@ const prisma: PrismaClient = new PrismaClient();
 
 export class ItemsController {
     async index(req: Request, res: Response) {
-        console.log("      ");
         const patients: patients[] = await prisma.patients.findMany();
-        const statistics = await prisma.statistics.findMany();
+        const statistics = await prisma.statistics_pulse.findMany();
 
          let stamp = [];
          for (let i = 0; i < statistics.length; i++) {
@@ -52,76 +51,23 @@ export class ItemsController {
         });
     }
 
-    async data(req: Request, res: Response) {
-        console.log("      ");
+    async recording_statistics(req: Request, res: Response) {
+        const {temp, pulse} = req.body;
+        console.log(req.body);
+        console.log(temp, "-----", pulse);
 
-        let pulse = Number(req.query.pulse); // localhost?pulse=60
-
-        const count_first = await prisma.statistics.findFirst({
-            where: {
-                patient_id: Number(1)
-            },
-        });
-        const count = await prisma.statistics.count({
-            where: {
-                patient_id: Number(1)
-            },
-        });
-        if (count >= 14) {
-            await prisma.statistics.deleteMany({
-                where: {
-                    id: count_first.id,
-                },
-            })
-        }
-
-        let time = await new Date();
-        if (pulse) {
-            await prisma.statistics.create({
-                data: {
-                    pulse: pulse,
-                    time: time,
-                    patient_id: 1,
-                }
-            });
-        }
-        console.log(time);
-
-        res.redirect('/');
-    }
-
-    async statistics_show(req: Request, res: Response) {
-        const patients: patients[] = await prisma.patients.findMany();
-        const statistics = await prisma.statistics.findMany();
-
-        let stamp = [];
-        for (let i = 0; i < statistics.length; i++) {
-            let month = statistics[i].time.getUTCMonth() + 1;
-            let time = statistics[i].time.getUTCHours() + 3;
-            stamp[i] = statistics[i].time.getDate() + "." + month + " " + time + ":" + statistics[i].time.getMinutes();
-        }
-        let data = [];
-        for (let j = 0; j < statistics.length; j++) {
-            data[j] = {time: stamp[j]}
-        }
-        const myChart = new Chart(ctx, {
-            type: 'line',
+        await prisma.statistics_pulse.create({
             data: {
-                labels: data.map(row => row.time),
-                datasets: [
-                    {
-                        label: 'Pulse',
-                        data: statistics.map(row => row.pulse)
-                    }
-                ]
+                pulse: Number(pulse),
+                time:  new Date(),
+                patient_id: 1,
             }
         });
-        const buffer = canvas.toBuffer('image/png');
-        fs.writeFileSync("public/img/image1.png", buffer);
-        myChart.destroy();
+        res.sendStatus(200);
+    }
 
-        let object = {patients, statistics};
-        console.log(object);
-        res.status(200).send(object);
+    // СТРАНИЦА ИМИТАЦИИ POST-запроса С ARDUINO
+    async hms(req: Request, res: Response,){
+        res.render('hms');
     }
 }

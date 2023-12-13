@@ -1,78 +1,8 @@
 <%- include('particles/header.ejs') %>
-
 <%- include('particles/navigation.ejs') %>
-<h1 style="margin:0 25% 0 25%;">Система мониторинга здоровья пациента</h1>
+<h1 style="margin:0 25% 0 25%;"><a href="/">Система мониторинга здоровья пациента</a></h1>
 
-<% for (let i = 0; i < patients.length; i++) { %>
+<a href="/logIN">Войти</a>
+<a href="/register">Зарегистрироваться</a>
 
-    <div class="section" >
-        <h2 class="section__title"><%= patients[i].surname %> <%= patients[i].name %></h2>
-	<img src="img/image1.png" />
-        <canvas id="statistics_patients">
-
-        </canvas>
-    </div>
-<% } %>
-
-<script async>
-    // async function getStatisticsAndShow() {
-        const ctx = document.getElementById('statistics_patients');
-
-        let stamp = [];
-        for (let i = 0; i < statistics.length; i++) {
-            let month = statistics[i].time.getUTCMonth() + 1;
-            let time = statistics[i].time.getUTCHours() + 3;
-            stamp[i] = statistics[i].time.getDate() + "." + month + " " + time + ":" + statistics[i].time.getMinutes();
-        }
-        let data = [];
-        for (let j = 0; j < statistics.length; j++) {
-            data[j] = {time: stamp[j]}
-        }
-        let chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: data.map(row => row.time),
-                datasets: [
-                    {
-                        label: 'Pulse',
-                        data: statistics.map(row => row.pulse)
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                elements: {
-                point:{
-                    radius: 0
-                }
-            }
-            }
-        });    
-            
-        // let stateWrapper = document.querySelector('#statistics_patients');
-
-        // let response = await fetch('/api/v1/statistics/show');
-
-        // let statistics_patients = await response.json();
-        
-        // let patients = statistics_patients.patients;
-        // let statistics = statistics_patients.statistics;
-
-        // // console.log(statistics);
-
-        // stateWrapper.innerHTML += `<h2 class="section__title">${statistics_patients.patients[0].surname} ${statistics_patients.patients[0].name}</h2><img src="img/image<%= 1 %>.png" />`;
-        
-        // // console.log(statistics);
-        console.log(1);
-    // }
-    // getStatisticsAndShow();
-
-</script>
-
-<!-- <script type="module" src="../../public/js/draw.js"></script> -->
 <%- include('particles/footer.ejs') %>

@@ -1,0 +1,41 @@
+<%- include('particles/header.ejs') %>
+
+<%- include('particles/navigation.ejs') %>
+<h1 style="margin:0 25% 0 25%;">Система мониторинга здоровья пациента</h1>
+
+<% for (let i = 0; i < patients.length; i++) { %>
+
+    <div class="section" >
+        <h2 class="section__title"><%= patients[i].surname %> <%= patients[i].name %></h2>
+	<img src="img/image1.png" />
+        <canvas id="statistics_patients">
+
+        </canvas>
+    </div>
+<% } %>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+<script async>
+    intervalId = window.setInterval(function () { const ctx = document.querySelector('canvas');
+    console.log("1"); fetch('/api/v1/statistics/show')
+    .then(
+        (response) => {
+        }
+    )
+    .then(
+        (result) => {
+            console.log(result);
+            
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                result,
+            });
+        }
+    ).finally(
+        () => {
+            console.log('Items loaded.');
+        }
+    ); }, 1000);
+</script>
+
+<!-- <script type="module" src="../../public/js/draw.js"></script> -->
+<%- include('particles/footer.ejs') %>

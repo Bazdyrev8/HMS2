@@ -20,9 +20,8 @@ const prisma = new client_1.PrismaClient();
 class ItemsController {
     index(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("      ");
             const patients = yield prisma.patients.findMany();
-            const statistics = yield prisma.statistics.findMany();
+            const statistics = yield prisma.statistics_pulse.findMany();
             let stamp = [];
             for (let i = 0; i < statistics.length; i++) {
                 let month = statistics[i].time.getUTCMonth() + 1;
@@ -58,73 +57,25 @@ class ItemsController {
             });
         });
     }
-    data(req, res) {
+    recording_statistics(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("      ");
-            let pulse = Number(req.query.pulse); // localhost?pulse=60
-            const count_first = yield prisma.statistics.findFirst({
-                where: {
-                    patient_id: Number(1)
-                },
-            });
-            const count = yield prisma.statistics.count({
-                where: {
-                    patient_id: Number(1)
-                },
-            });
-            if (count >= 14) {
-                yield prisma.statistics.deleteMany({
-                    where: {
-                        id: count_first.id,
-                    },
-                });
-            }
-            let time = yield new Date();
-            if (pulse) {
-                yield prisma.statistics.create({
-                    data: {
-                        pulse: pulse,
-                        time: time,
-                        patient_id: 1,
-                    }
-                });
-            }
-            console.log(time);
-            res.redirect('/');
-        });
-    }
-    statistics_show(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const patients = yield prisma.patients.findMany();
-            const statistics = yield prisma.statistics.findMany();
-            let stamp = [];
-            for (let i = 0; i < statistics.length; i++) {
-                let month = statistics[i].time.getUTCMonth() + 1;
-                let time = statistics[i].time.getUTCHours() + 3;
-                stamp[i] = statistics[i].time.getDate() + "." + month + " " + time + ":" + statistics[i].time.getMinutes();
-            }
-            let data = [];
-            for (let j = 0; j < statistics.length; j++) {
-                data[j] = { time: stamp[j] };
-            }
-            const myChart = new Chart(ctx, {
-                type: 'line',
+            const { temp, pulse } = req.body;
+            console.log(req.body);
+            console.log(temp, "-----", pulse);
+            yield prisma.statistics_pulse.create({
                 data: {
-                    labels: data.map(row => row.time),
-                    datasets: [
-                        {
-                            label: 'Pulse',
-                            data: statistics.map(row => row.pulse)
-                        }
-                    ]
+                    pulse: Number(pulse),
+                    time: new Date(),
+                    patient_id: 1,
                 }
             });
-            const buffer = canvas.toBuffer('image/png');
-            fs.writeFileSync("public/img/image1.png", buffer);
-            myChart.destroy();
-            let object = { patients, statistics };
-            console.log(object);
-            res.status(200).send(object);
+            res.sendStatus(200);
+        });
+    }
+    // СТРАНИЦА ИМИТАЦИИ POST-запроса С ARDUINO
+    hms(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            res.render('hms');
         });
     }
 }
