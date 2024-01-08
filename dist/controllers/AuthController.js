@@ -34,7 +34,11 @@ class AuthController {
                     username: username,
                 },
             });
-            ;
+            const selectDevise = yield prisma.serialNumber_device.findMany({
+                where: {
+                    number: serialNumber,
+                },
+            });
             if (selectUsername.length != 0) {
                 res.redirect('/');
             }

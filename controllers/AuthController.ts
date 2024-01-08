@@ -23,7 +23,7 @@ export class AuthController {
             where: {
                 username: username,
             },
-        });;
+        });
 
         if (selectUsername.length != 0) {
             res.redirect('/');

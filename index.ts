@@ -45,12 +45,24 @@ app.get("/logIN", (req: Request, res: Response) => {
   authController.logIN(req, res);
 });
 
+// Здесь регистрация для ГлавВРАЧА и ОБЫЧНОГО
+
 app.get("/register", (req: Request, res: Response) => {
+  authController.register(req, res);
+});
+
+app.get("/register_", (req: Request, res: Response) => {
   authController.register(req, res);
 });
 
 app.post("/auth", (req: Request, res: Response) => {
   authController.auth(req, res);
+});
+
+// Здесь регистрация для ГлавВРАЧА и ОБЫЧНОГО
+
+app.post("/registration", (req: Request, res: Response) => {
+  authController.registration(req, res);
 });
 
 app.post("/registration", (req: Request, res: Response) => {
