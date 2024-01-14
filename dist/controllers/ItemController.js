@@ -20,6 +20,7 @@ const prisma = new client_1.PrismaClient();
 class ItemsController {
     index(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.session.auth);
             const patients = yield prisma.patients.findMany();
             const statistics = yield prisma.statistics_pulse.findMany();
             let stamp = [];

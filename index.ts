@@ -12,6 +12,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(session({ secret: "Secret", resave: false, saveUninitialized: true }));
 
 declare module "express-session" {
   interface SessionData {
@@ -41,17 +42,18 @@ app.get("/hms", (req: Request, res: Response) => {
 
 
 // ACCOUNT
+
+app.get("/account", (req: Request, res: Response) => {
+  authController.account(req, res);
+});
+
 app.get("/logIN", (req: Request, res: Response) => {
   authController.logIN(req, res);
 });
 
-// Здесь регистрация для ГлавВРАЧА и ОБЫЧНОГО
+// Регистрация
 
 app.get("/register", (req: Request, res: Response) => {
-  authController.register(req, res);
-});
-
-app.get("/register_", (req: Request, res: Response) => {
   authController.register(req, res);
 });
 
@@ -60,10 +62,6 @@ app.post("/auth", (req: Request, res: Response) => {
 });
 
 // Здесь регистрация для ГлавВРАЧА и ОБЫЧНОГО
-
-app.post("/registration", (req: Request, res: Response) => {
-  authController.registration(req, res);
-});
 
 app.post("/registration", (req: Request, res: Response) => {
   authController.registration(req, res);

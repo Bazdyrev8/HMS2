@@ -11,6 +11,7 @@ const prisma: PrismaClient = new PrismaClient();
 
 export class ItemsController {
     async index(req: Request, res: Response) {
+        console.log(req.session.auth);
         const patients: patients[] = await prisma.patients.findMany();
         const statistics = await prisma.statistics_pulse.findMany();
 

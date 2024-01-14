@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { users, PrismaClient } from '@prisma/client';
 import { create } from 'domain';
+import session from 'express-session';
 
 const prisma: PrismaClient = new PrismaClient();
 
@@ -12,6 +13,18 @@ export class AuthController {
     }
     async register(req: Request, res: Response,) {
         res.render('account/register');
+    }
+
+    async account(req: Request, res: Response,) {
+        console.log(req.session.auth);
+        
+        if (req.session.auth != true) {
+            res.render('account/logIN');
+        };
+
+        res.render('account/account', {
+            auth: req.session.auth,
+        });
     }
 
     // POST Registration

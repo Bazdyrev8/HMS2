@@ -24,6 +24,18 @@ class AuthController {
             res.render('account/register');
         });
     }
+    account(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.session.auth);
+            if (req.session.auth != true) {
+                res.render('account/logIN');
+            }
+            ;
+            res.render('account/account', {
+                auth: req.session.auth,
+            });
+        });
+    }
     // POST Registration
     registration(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -32,11 +44,6 @@ class AuthController {
             const selectUsername = yield prisma.users.findMany({
                 where: {
                     username: username,
-                },
-            });
-            const selectDevise = yield prisma.serialNumber_device.findMany({
-                where: {
-                    number: serialNumber,
                 },
             });
             if (selectUsername.length != 0) {
